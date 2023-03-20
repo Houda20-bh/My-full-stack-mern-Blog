@@ -3,23 +3,30 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import {Link} from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { register } from "../Redux/Slices/AuthSclice";
+import { toast } from "react-toastify";
 
-function Register() {
-    const [formValue,setFormValue]=useState({
-        name:'',
-        email:'',
-        password:'',
-    });
-    
-    const onChange = (e)=>{
-        setFormValue({...formValue,[e.target.name]:e.target.value});
-    }
-    console.log(formValue);
+function Register(props) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [formValue, setFormValue] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const onChange = (e) => {
+    setFormValue({ ...formValue, [e.target.name]: e.target.value });
+  };
+  const onSubmit = (e) => {
+    e.preventDefault();
+    dispatch(register({ formValue, navigate, toast }));
+  };
     return (
         <div>
         <Container component="main" maxWidth="xs">
@@ -37,7 +44,7 @@ function Register() {
             <Typography component="h1" variant="h5">
               Sign up
             </Typography>
-            <Box component="form"  noValidate sx={{ mt: 1 }}>
+            <Box  onSubmit={onSubmit} component="form"  noValidate sx={{ mt: 1 }}>
             <TextField onChange={onChange}
                 margin="normal"
                 required
